@@ -20,7 +20,7 @@ public:
     ~LinkedList() {}
     void insert(T value) {}
     void display() const {}
-    void deleteValue(int index) {}
+    void deleteIndex(int index) {}
 };
 
 #endif // LINKEDLIST_H

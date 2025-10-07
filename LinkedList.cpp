@@ -33,7 +33,7 @@ void LinkedList<T>::display() const {
     std::cout << "nullptr" << std::endl;
 }
 template <typename T>
-void LinkedList<T>::deleteValue(int index) {
+void LinkedList<T>::deleteIndex(int index) {
     if (index < 0 || !head) return;
 
     Node<T>* temp = head;
