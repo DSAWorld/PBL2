@@ -2,25 +2,32 @@
 #define LINKEDLIST_H
 
 #include <iostream>
-template <typename T>
+template <typename Class>
 class Node{
 public:
-    T data;
+    Class data;
     Node* next;
-
-    Node(T value) : data(value), next(nullptr) {}
+    Node(Class value) : data(value), next(nullptr) {}
 };
 
-template <typename T>
+template <typename Class>
 class LinkedList {
 private:
-    Node<T>* head;
+    Node<Class>* head;
+    Node<Class>* tail;
+    unsigned int Size;
 public:
-    LinkedList() : head(nullptr) {}
-    ~LinkedList() {}
-    void insert(T value) {}
-    void display() const {}
-    void deleteIndex(int index) {}
-};
+    LinkedList() : head(nullptr), tail(nullptr){};
+    LinkedList(Class Data);
+    ~LinkedList();
+    void display() const;
+    void deleteIndex(int index);
+    void Swap(Node<Class> *A, Node<Class> *B);
+    template <typename Member> bool CompEqual(const Class &A, const Class &B, Member Class::*memberPtr);
+    template <typename Member> bool Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc);
+    template <typename Member> Node<Class>* Partition(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc);
+    template <typename Member> void Sort(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc);
+    template <typename Member> void SortWrap(Member Class::*memberPtr);
+};  
 
 #endif // LINKEDLIST_H
