@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.c": "c",
+        "iosfwd": "cpp",
+        "compare": "cpp",
+        "format": "cpp",
+        "limits": "cpp",
+        "optional": "cpp",
+        "type_traits": "cpp",
+        "variant": "cpp"
+    }
+}

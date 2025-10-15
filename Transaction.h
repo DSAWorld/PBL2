@@ -2,6 +2,11 @@
 #define TRANSAC_H
 
 #include <iostream>
+<<<<<<< Updated upstream
+=======
+#include <string.h>
+#include "LinkedList.h"
+>>>>>>> Stashed changes
 #include "Date.h"
 
 using namespace std;
@@ -26,6 +31,12 @@ class Transaction{
     Date Due;
     Date Return;
     enum Status stat;
+<<<<<<< Updated upstream
+=======
+    public:
+    friend bool LinkedList<Transaction>::Comp(const Transaction& A, const Transaction& B, Date Transaction::*memberPtr, bool asc);
+    friend bool LinkedList<Transaction>::Comp(const Transaction& A, const Transaction& B, string Transaction::*memberPtr, bool asc);
+>>>>>>> Stashed changes
 };
 
 #endif // TRANSAC_H

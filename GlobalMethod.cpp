@@ -3,8 +3,24 @@
 
 using namespace std;
 
+<<<<<<< Updated upstream
 template <typename Class>
 LinkedList<Class>::LinkedList(Class Data){
+=======
+template <typename Class> LinkedList<Class>::LinkedList(const LinkedList<Class> &other):head(nullptr), tail(nullptr){
+        if (!other.head)
+            return;
+        Node<Class> *currentOther = other.head;
+        while (currentOther)
+        {
+            this->Add(currentOther->data);
+            currentOther = currentOther->next;
+        }
+    };
+
+template <typename Class>
+void LinkedList<Class>::Add(Class Data){
+>>>>>>> Stashed changes
     Node<Class> *newNode = new Node<Class>(Data);
     if (head == nullptr){
         head = newNode;
@@ -17,10 +33,98 @@ LinkedList<Class>::LinkedList(Class Data){
 }
 
 template <typename Class>
+<<<<<<< Updated upstream
 template <typename Member>
 bool LinkedList<Class>::Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc){
     if (asc) return A.*memberPtr < B.*memberPtr;
     else return A.*memberPtr > B.*memberPtr;
+=======
+void LinkedList<Class>::Pushback(Class Data){
+    Node<Class> *newNode = new Node<Class>(Data);
+    if (head == nullptr){
+        head = newNode;
+        tail = head;
+    } else {
+        head -> next = head;
+        head = newNode;
+    }
+}
+
+template <typename Class>
+LinkedList<Class>::~LinkedList(){
+    Node<Class> *temp = head;
+    while (temp != nullptr){
+        Node<Class> *next = temp->next;
+        delete temp;
+        temp = next;
+    }
+    head = nullptr;
+    tail = nullptr;
+}
+
+template <typename Class> 
+void LinkedList<Class>::deleteIndex(int index) {
+    if (head == nullptr) {
+        cout << "DSLK rong" << endl;
+        return;
+    }
+    if (index < 1) {
+        cout << "Gia tri khong hop le" << endl;
+        return;
+    }
+    Node<Class> *current = head;
+    Node<Class> *prev = nullptr;
+    if (index == 1) {
+        head = head->next;
+        if (head == nullptr) tail = nullptr;
+        delete current;
+        return;
+    }
+    int count = 1;
+    while (current != nullptr && count < index) {
+        prev = current;
+        current = current->next;
+        count++;
+    }
+    if (current == nullptr) {
+        cout << "Index out of range" << endl;
+        return;
+    }
+    prev->next = current->next;
+    if (current == tail) tail = prev;
+    delete current;
+}
+
+template <typename Class> void LinkedList<Class>::display() const {
+    cout << "______________________________" << endl;
+    Node<Class> *temp = head;
+    while (temp)
+    {
+        cout << temp->data << endl;
+        temp = temp->next;
+    }
+    cout << "______________________________" << endl;
+};
+
+template <typename Class>
+template <typename Member> 
+LinkedList<Class> LinkedList<Class>::SearchMethod(Member Class::*memberPtr, Member Data) const {
+    LinkedList<Class> Result;
+    Node<Class> *Curr = head;
+    while (Curr != nullptr){
+        if(Curr->data.*memberPtr == Data){
+        Result.Add(Curr->data);
+        }
+        Curr = Curr->next;
+    }
+    return Result;
+};
+
+template <typename Class>
+template <typename Member>
+bool LinkedList<Class>::Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc) {
+    return asc ? (A.*memberPtr < B.*memberPtr) : (A.*memberPtr > B.*memberPtr);
+>>>>>>> Stashed changes
 }
 
 template <typename Class>
@@ -32,6 +136,7 @@ void LinkedList<Class>::Swap(Node<Class>* A, Node<Class>* B) {
 
 template <typename Class>
 template <typename Member>
+<<<<<<< Updated upstream
 Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc){
     Class piv = high->data;
     Node<Class> *i = low;
@@ -40,6 +145,19 @@ Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, M
             Swap(i, j);
             i=i->next;
         }
+=======
+Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc) {
+    Class pivot = high->data;
+    Node<Class>* i = low;
+    Node<Class>* j = low;
+    
+    while (j != high) {
+        if (Asc ? (j->data.*memberPtr < pivot.*memberPtr) : (j->data.*memberPtr > pivot.*memberPtr)) {
+            Swap(i, j);
+            i = i->next;
+        }
+        j = j->next;
+>>>>>>> Stashed changes
     }
     Swap(i, high);
     return i;
@@ -51,7 +169,16 @@ void LinkedList<Class>::Sort(Node<Class>* low, Node<Class>* high, Member Class::
     if (high != nullptr && low != nullptr && low != high->next){
         Node<Class> *Point = Partition(low, high, memberPtr, Asc);
         Node<Class> *prevPoint = low;
+<<<<<<< Updated upstream
         if (Point != low) {while (prevPoint -> next != Point) {prevPoint = prevPoint->next;}} else prevPoint=nullptr;
+=======
+        if (Point != low) {
+            while (prevPoint -> next != Point) {
+                prevPoint = prevPoint->next;
+            }
+        } 
+        else prevPoint=nullptr;
+>>>>>>> Stashed changes
         if (prevPoint != nullptr) Sort(low, prevPoint, memberPtr, Asc);
         Sort(Point->next, high, memberPtr, Asc);
     }
@@ -72,6 +199,7 @@ void LinkedList<Class>::SortWrap(Member Class::*memberPtr){
         <<"\n[2] giam dan";
     while(true){
         cin>>Choice;
+<<<<<<< Updated upstream
         switch(Choice){
             case 0: return;
             case 1: {Asc = true; break;}
@@ -80,4 +208,28 @@ void LinkedList<Class>::SortWrap(Member Class::*memberPtr){
         }
     }
     Sort(head, tail, memberPtr, Asc);
+=======
+        if (Choice == 0) return;
+        if (Choice == 1 || Choice == 2) {
+            if (Choice == 1) Asc = 1;
+            else Asc = 0;
+            break;
+        };
+    }
+    Sort(head, tail, memberPtr, Asc);
+}
+
+template <typename ClassAlt> ostream &operator <<(ostream &out, const LinkedList<ClassAlt> &list){
+    if (list.head == nullptr){
+        cout<<"\nDanh sach rong";
+        return out;
+    }
+    Node<ClassAlt> *Curr = list.head;
+    ClassAlt::header(out);
+    while (Curr != nullptr){
+    out<<"\n"<<Curr->data;
+    Curr=Curr->next;
+    }
+    return out;
+>>>>>>> Stashed changes
 }
