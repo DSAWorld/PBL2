@@ -1,16 +1,16 @@
-#include "LinkedList.h"
-#include "GlobalMethod.cpp"
+#include "LinkedList.cpp"
 #include <iostream>
 
 using namespace std;
 
-class Exam{
-    protected:
+class Exam {
+    private:
     int BUCKFOI;
     int NGG;
     public:
-    // friend bool LinkedList<Exam>::Comp(const Exam& A, const Exam& B, int Exam::*memberPtr, bool asc);
     Exam(int buckfoi, int ngg) : BUCKFOI(buckfoi), NGG(ngg) {}
+    static auto getBuckfoiPtr() { return &Exam::BUCKFOI; }
+    static auto getNggPtr() { return &Exam::NGG; }
     friend ostream& operator<<(ostream& os, const Exam &A) {
         os << "\n" << A.BUCKFOI << "   " << A.NGG;
         return os;
@@ -24,7 +24,7 @@ int main() {
     A.Add(Test);
     A.Add(Test2);
     A.display();
-    A.SortWrap(&Exam::BUCKFOI);
+    A.SortWrap(Exam::getBuckfoiPtr());
     A.display();
     int i;
     cin>>i;

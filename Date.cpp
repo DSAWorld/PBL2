@@ -1,29 +1,12 @@
-<<<<<<< Updated upstream
-#ifndef MEMBER_H
-#define MEMBER_H
-
-#include <iostream>
-
-using namespace std;
-
-enum Status{
-    Active,
-    Expired,
-    Suspended
-};
-
-class Member{
-    string ID;
-    string Name;
-    string Contact;
-    enum Status state;
-    string *Hist;
-    string *CurrentLoan;
-};
-
-#endif // MEMBER_H
-=======
 #include "Date.h"
+
+Date::Date(int ConvVal){
+    int TimeVal = (ConvVal+25200) / 86400;
+    Date UnitTime(1,1,1970);
+    *this = UnitTime + TimeVal;
+}
+
+Date::Date(const Date &A):D(A.D), M(A.M), Y(A.Y){}
 
 int Date::NoofDay(){
     const int Mon[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -32,7 +15,7 @@ int Date::NoofDay(){
 }
 
 bool Date::isValid(){
-    return !(D < 1 || M < 1 || M > 12 || D > NoofDay() );
+    return !( D < 1 || M < 1 || M > 12 || D > NoofDay() );
 }
 Date Date::operator + (int Add) {
     D += Add;
@@ -46,6 +29,7 @@ Date Date::operator + (int Add) {
         }
         Temp = NoofDay();
     }
+    return *this;
 };
 Date Date::operator - (int Sub){
     D -= Sub;
@@ -57,23 +41,26 @@ Date Date::operator - (int Sub){
         }
         D += NoofDay();
     }
+    return *this;
 };
 
-int Date::operator - (Date &Sub){
+int Date::operator - (Date &Sub) const {
     const int monthDays[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     int days1 = Y * 365 + D;
-    for (int i = 0; i < M - 1; i++)
+    for (int i = 0; i < M - 1; i++){
         days1 += monthDays[i];
+    };
     days1 += (Y / 4) - (Y / 100) + (Y / 400);
     int days2 = Sub.Y * 365 + Sub.D;
-    for (int i = 0; i < Sub.M - 1; i++)
+    for (int i = 0; i < Sub.M - 1; i++){
         days2 += monthDays[i];
+    };
     days2 += (Sub.Y / 4) - (Sub.Y / 100) + (Sub.Y / 400);
     return days1 - days2;
 }
 
 bool Date::operator < (Date &Sub){
-    return *this-Sub<0;
+    return *this-Sub<=0;
 }
 
 bool Date::operator > (Date &Sub){
@@ -92,4 +79,3 @@ ostream &operator <<(ostream &out, const Date &x){
     out<<x.D<<"/"<<x.M<<"/"<<x.Y;
     return out;
 };
->>>>>>> Stashed changes

@@ -3,10 +3,6 @@
 
 using namespace std;
 
-<<<<<<< Updated upstream
-template <typename Class>
-LinkedList<Class>::LinkedList(Class Data){
-=======
 template <typename Class> LinkedList<Class>::LinkedList(const LinkedList<Class> &other):head(nullptr), tail(nullptr){
         if (!other.head)
             return;
@@ -20,7 +16,6 @@ template <typename Class> LinkedList<Class>::LinkedList(const LinkedList<Class> 
 
 template <typename Class>
 void LinkedList<Class>::Add(Class Data){
->>>>>>> Stashed changes
     Node<Class> *newNode = new Node<Class>(Data);
     if (head == nullptr){
         head = newNode;
@@ -33,19 +28,13 @@ void LinkedList<Class>::Add(Class Data){
 }
 
 template <typename Class>
-<<<<<<< Updated upstream
-template <typename Member>
-bool LinkedList<Class>::Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc){
-    if (asc) return A.*memberPtr < B.*memberPtr;
-    else return A.*memberPtr > B.*memberPtr;
-=======
 void LinkedList<Class>::Pushback(Class Data){
     Node<Class> *newNode = new Node<Class>(Data);
     if (head == nullptr){
         head = newNode;
         tail = head;
     } else {
-        head -> next = head;
+        newNode -> next = head;
         head = newNode;
     }
 }
@@ -124,7 +113,6 @@ template <typename Class>
 template <typename Member>
 bool LinkedList<Class>::Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc) {
     return asc ? (A.*memberPtr < B.*memberPtr) : (A.*memberPtr > B.*memberPtr);
->>>>>>> Stashed changes
 }
 
 template <typename Class>
@@ -136,20 +124,10 @@ void LinkedList<Class>::Swap(Node<Class>* A, Node<Class>* B) {
 
 template <typename Class>
 template <typename Member>
-<<<<<<< Updated upstream
-Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc){
-    Class piv = high->data;
-    Node<Class> *i = low;
-    for(Node<Class> *j = low; j != high - 1; j=j->next){
-        if(Comp(j->data, piv, memberPtr, Asc)){
-            Swap(i, j);
-            i=i->next;
-        }
-=======
 Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc) {
     Class pivot = high->data;
-    Node<Class>* i = low;
-    Node<Class>* j = low;
+    Node<Class>* i = low; 
+    Node<Class>* j = low; 
     
     while (j != high) {
         if (Asc ? (j->data.*memberPtr < pivot.*memberPtr) : (j->data.*memberPtr > pivot.*memberPtr)) {
@@ -157,7 +135,6 @@ Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, M
             i = i->next;
         }
         j = j->next;
->>>>>>> Stashed changes
     }
     Swap(i, high);
     return i;
@@ -166,20 +143,9 @@ Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, M
 template <typename Class>
 template <typename Member>
 void LinkedList<Class>::Sort(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc){
-    if (high != nullptr && low != nullptr && low != high->next){
+    if (low != high->next || low != high){
         Node<Class> *Point = Partition(low, high, memberPtr, Asc);
-        Node<Class> *prevPoint = low;
-<<<<<<< Updated upstream
-        if (Point != low) {while (prevPoint -> next != Point) {prevPoint = prevPoint->next;}} else prevPoint=nullptr;
-=======
-        if (Point != low) {
-            while (prevPoint -> next != Point) {
-                prevPoint = prevPoint->next;
-            }
-        } 
-        else prevPoint=nullptr;
->>>>>>> Stashed changes
-        if (prevPoint != nullptr) Sort(low, prevPoint, memberPtr, Asc);
+        Sort(low, Point, memberPtr, Asc);
         Sort(Point->next, high, memberPtr, Asc);
     }
 }
@@ -199,16 +165,6 @@ void LinkedList<Class>::SortWrap(Member Class::*memberPtr){
         <<"\n[2] giam dan";
     while(true){
         cin>>Choice;
-<<<<<<< Updated upstream
-        switch(Choice){
-            case 0: return;
-            case 1: {Asc = true; break;}
-            case 2: {Asc = false; break;}
-            default: {cout<<"\nKhong hop le"; continue;}
-        }
-    }
-    Sort(head, tail, memberPtr, Asc);
-=======
         if (Choice == 0) return;
         if (Choice == 1 || Choice == 2) {
             if (Choice == 1) Asc = 1;
@@ -231,5 +187,8 @@ template <typename ClassAlt> ostream &operator <<(ostream &out, const LinkedList
     Curr=Curr->next;
     }
     return out;
->>>>>>> Stashed changes
+}
+
+void LinkedList<Class>::Search(){
+    
 }

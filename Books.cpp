@@ -21,14 +21,7 @@ enum Category{
 class Books{
     private: 
     string ID;
-<<<<<<< Updated upstream
-    string Name;
-    string Author;
-    string Publisher;
-    enum Category genre;
-=======
     enum Category genre; 
->>>>>>> Stashed changes
     unsigned int TotalAmount;
     unsigned int Available;
     public:
