@@ -8,8 +8,9 @@ Transaction::Transaction(string Owner, int state, int borrowingdays, Items *Item
     ID = IDHelper(Time);
     OwnerID = Owner;
     State = state;
-    if(state == Active){
-    Borrowing = new Date(time(NULL));
+    if(state == Actived){
+    Time = time(NULL);
+    Borrowing((int)Time);
     Due = Borrowing + borrowingdays;
     }
     if (List == nullptr){
@@ -20,14 +21,15 @@ Transaction::Transaction(string Owner, int state, int borrowingdays, Items *Item
     
 }
 
-Transaction::IDHelper(long Val){
+string Transaction::IDHelper(long Val){
     string YMD;
     long HMS = (Val+25200) % 86400;
     Date Temp(Val);
-    YMD = to_string(Temp.Y-2000) + 
-        ((Temp.M<10) ? {"0" + to_string(Temp.M)} : to_string(Temp.M)) + 
-        ((Temp.D<10) ? {"0" + to_string(Temp.D)} : to_string(Temp.D)) +
-        to_string(HMS);
+    YMD = to_string(Temp.Y-2000) + StringHelper(Temp.M) + StringHelper(Temp.D);
+    int H = HMS / 3600;
+    int M = (HMS % 3600) / 60;
+    int S = (HMS % 3600) % 60;
+    YMD +=  StringHelper(H) + StringHelper(M) +StringHelper(S);
     return YMD;
 }
 
@@ -56,7 +58,7 @@ void Transaction::CalculateFee(Member &ReturningMember){
     }
 }
 
-void Transaction::Search(const LinkedList<Member>& List){
+void Transaction::Search(const LinkedList<Transaction>& List){
     cout<<"Nhap lua chon tim kiem theo:\n"
         <<"[1] Chu the muon\n"
         <<"[2] Ma the muon\n"
@@ -70,10 +72,10 @@ void Transaction::Search(const LinkedList<Member>& List){
                 string ID;
                 cout<<"\nNhap ID chu the:";
                 cin >> ID;
-                LinkedList<Member> existing = List.SearchMethod(getStringPtr(stringID), ID);
+                LinkedList<Transaction> existing = List.SearchMethod(getStringPtr(stringID), ID);
                 if (existing.isEmpty()){
                     cout<<"\nKhong ton tai ID nay";
-                    cin.get;
+                    cin.get();
                     return;
                 }
                 else cout << List;
@@ -82,10 +84,10 @@ void Transaction::Search(const LinkedList<Member>& List){
                 string ID;
                 cout<<"\nNhap ID the:";
                 cin >> ID;
-                LinkedList<Member> existing = List.SearchMethod(getStringPtr(stringOwner), ID);
+                LinkedList<Transaction> existing = List.SearchMethod(getStringPtr(stringOwner), ID);
                 if (existing.isEmpty()){
                     cout<<"\nKhong ton tai ID nay";
-                    cin.get;
+                    cin.get();
                     return;
                 }
                 else cout << List;
@@ -102,10 +104,10 @@ void Transaction::Search(const LinkedList<Member>& List){
                     cin >> Num;
                     if (Num < 1 || Num > 5) cout<<"\nKhong hop le";
                 }
-                LinkedList<Member> existing = List.SearchMethod(getIntPtr(intState), Num-1);
+                LinkedList<Transaction> existing = List.SearchMethod(getIntPtr(intState), Num-1);
                 if (existing.isEmpty()){
                     cout<<"Khong co the nao co tinh trang nay";
-                    cin.get;
+                    cin.get();
                     return;
                 }
                 else cout << List;

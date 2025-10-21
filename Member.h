@@ -3,19 +3,17 @@
 
 #include <iostream>
 #include <string.h>
-#include "LinkedList.cpp"
-#include "Transaction.cpp"
-#include "Date.cpp"
+#include "LinkedList.h"
+#include "Transaction.h"
+#include "Date.h"
 
 using namespace std;
 
-template <typename Class> class LinkedList; 
-
-enum Status{
+enum MemberStatus{
     Active,
     Warned,
     Suspended
-}
+};
 
 class Member{
     protected:
@@ -27,7 +25,7 @@ class Member{
     string *TransactionID; //List of Current, not turned in Transactions
     int state;
     public:
-    Member(string NameInp, string ContactInp, string IDInp){};
+    Member(string NameInp, string ContactInp, string IDInp);
     static Member* newMember(const LinkedList<Member>& allMembers);
     ~Member();
     void Edit();

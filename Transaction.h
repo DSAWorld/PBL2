@@ -15,8 +15,6 @@ struct Items{
     unsigned int Amount = 0;
 };
 
-Member ReturningMember;
-
 enum returnTypes{
     stringID = 1,
     stringOwner = 2,
@@ -25,10 +23,10 @@ enum returnTypes{
     DateBorrowing = 1,
     DateDue = 2,
     DateReturn = 3,
-}
+};
 
-enum Status{
-    Active,
+enum TransStatus{
+    Actived,
     Reserved,
     Ready,
     Returned,
@@ -46,16 +44,19 @@ class Transaction{
     unsigned int Fee = 0;
     int State;
     public:
-    Transaction(string Owner, int state);
-
+    Transaction(string Owner, int state, int borrowingdays, Items *ItemList);
     string IDHelper(long);
+    static string StringHelper(int Value){
+        if (Value < 10) return "0" + to_string(Value);
+        else return to_string(Value);
+    };
     ~Transaction();
     void Reserve();
     void BorrowDate(int Days);
     void CalculateFee(Member &ReturningMember);
     void Return(Member &ReturningMember);
-    void Search(const LinkedList<Member>& allMembers);
-    Items CreateBookList();
+    void Search(const LinkedList<Transaction>& List);
+    Items* CreateBookList();
     static auto getDatePtr(int Types){
         if (Types == DateBorrowing) return &Transaction::Borrowing; 
         if (Types == DateDue) return &Transaction::Due;
@@ -68,7 +69,7 @@ class Transaction{
     static auto getIntPtr(int Types){
         if (Types == intItemCount) return &Transaction::ItemCount; 
         if (Types == intState) return &Transaction::State;
-    };;
+    };
     friend bool LinkedList<Transaction>::Comp(const Transaction& A, const Transaction& B, Date Transaction::*memberPtr, bool asc);
     friend bool LinkedList<Transaction>::Comp(const Transaction& A, const Transaction& B, string Transaction::*memberPtr, bool asc);
     friend ostream& operator<<(ostream& os, const Transaction &A); 

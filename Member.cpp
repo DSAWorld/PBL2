@@ -32,8 +32,8 @@ Member* Member::newMember(const LinkedList<Member>& allMembers){
                 TempID = "SV-" + SVID;
                 LinkedList<Member> existing = allMembers.SearchMethod(&Member::ID, TempID);
                 if (!allMembers.isEmpty()){
-                    cout<<"ID bi trung, vui long kiem tra lai"
-                    cin.get()
+                    cout<<"ID bi trung, vui long kiem tra lai";
+                    cin.get();
                     return nullptr;
                 }
                 cin.get();
@@ -45,7 +45,7 @@ Member* Member::newMember(const LinkedList<Member>& allMembers){
                 int RandNum = rand()*rand() % 90000001 + 9999999;
                 TempID = "ID-" + to_string(RandNum);
                 LinkedList<Member> existing = allMembers.SearchMethod(&Member::ID, TempID);
-                } while(!allMembers.isEmpty());
+                } while (!allMembers.isEmpty());
                 cout<<"\nID: "<<ID;
                 cin.get();
                 break;
