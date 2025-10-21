@@ -13,6 +13,7 @@ class Date{
     Date(int d, int m, int y):D(d), M(m), Y(y){};
     Date(int Conv);
     Date(const Date &Temp);
+    Date(const string &DateStr);
     ~Date(){};
     int NoofDay();
     bool isValid();
@@ -23,6 +24,6 @@ class Date{
     Date operator - (int Sub);
     bool operator < (Date &Sub); 
     bool operator > (Date &Sub);
-    };
+    string toString() const;
 
 #endif // DATE_H

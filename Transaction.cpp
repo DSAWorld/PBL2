@@ -1,6 +1,6 @@
 #include "Transaction.h"
 #include <time.h>
-
+#include <sstream>
 using namespace std;
 
 Transaction::Transaction(string Owner, int state, int borrowingdays, Items *ItemList){
@@ -19,6 +19,36 @@ Transaction::Transaction(string Owner, int state, int borrowingdays, Items *Item
         List = ItemList;
     }
     
+}
+
+Transaction::Transaction(const string& str){
+    stringstream ss(str);
+    string token;
+    getline(ss, ID, ',');
+    getline(ss, OwnerID, ',');
+    getline(ss, token, ',');
+    ItemCount = stoi(token);
+    getline(ss, token, ',');
+    Borrowing = Date(token);
+    getline(ss, token, ',');
+    Due = Date(token);
+    getline(ss, token, ',');
+    ReturnDate = Date(token);
+    getline(ss, token, ',');
+    Fee = stoi(token);
+    getline(ss, token, ',');
+    State = stoi(token);
+    List = CreateBookList();
+    while (getline(ss, token, ';')){
+        stringstream itemss(token);
+        string bookid;
+        string amountstr;
+        getline(itemss, bookid, ',');
+        getline(itemss, amountstr, ',');
+        unsigned int amount = stoi(amountstr);
+        Items newItem(bookid, amount);
+        List->InsertAtEnd(newItem);
+    }
 }
 
 string Transaction::IDHelper(long Val){
@@ -120,4 +150,54 @@ void Transaction::Search(const LinkedList<Transaction>& List){
             }
         }
     }
+}
+
+string Transaction::toString(LinkedList<Items>* ItemList) const{
+    string str="";
+    Node<Items>* current = ItemList->head;
+    while (current != nullptr){
+        str += current->data.toString() + ";";
+        current = current->next;
+    }
+    return str;
+}
+
+void Transaction::CreateBookList(LinkedList<Books>& AllBooks){
+    List = new LinkedList<Items>();
+    for (int i = 0; i < ItemCount; i++){
+        string BookID;
+        unsigned int Amount;
+        cout << "Nhap ID sach thu " << i+1 << ": ";
+        cin >> BookID;
+        Books* bookPtr = AllBooks.SearchMethodSingle(&Books::ID, BookID);
+        if (bookPtr == nullptr){
+            cout << "Khong tim thay sach voi ID nay. Vui long nhap lai." << endl;
+            i--;
+            continue;
+        }
+        cout << "Nhap so luong muon thu " << i+1 << ": ";
+        cin >> Amount;
+        if (Amount > bookPtr->Available){
+            cout << "Khong du so luong sach. Vui long nhap lai." << endl;
+            i--;
+            continue;
+        }
+        Items newItem(BookID, Amount);
+        List.Add(newItem);
+        bookPtr->Available -= Amount;
+    }
+}
+
+string Transaction::toString() const{
+    string str="";
+    str += ID;
+    str += "," + OwnerID;
+    str += "," + to_string(ItemCount);
+    str += "," + Borrowing.toString();
+    str += "," + Due.toString();
+    str += "," + ReturnDate.toString();
+    str += "," + to_string(Fee);
+    str += "," + to_string(State);
+    str += "," + toString(List);
+    return str;
 }

@@ -8,6 +8,22 @@ Date::Date(int ConvVal){
 
 Date::Date(const Date &A):D(A.D), M(A.M), Y(A.Y){}
 
+Date::Date(const string &DateStr){
+    // Expected format: "DD/MM/YYYY"
+    if (DateStr.length() != 10 || DateStr[2] != '/' || DateStr[5] != '/') {
+        D = M = 1;
+        Y = 2025; // Default invalid date
+        return;
+    }
+    D = stoi(DateStr.substr(0, 2));
+    M = stoi(DateStr.substr(3, 2));
+    Y = stoi(DateStr.substr(6, 4));
+    if (!isValid()) {
+        D = M = 1;
+        Y = 2025; // Default invalid date
+    }
+}
+
 int Date::NoofDay(){
     const int Mon[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if (M == 2 && ((Y % 4 == 0 && Y % 100 !=0) || Y % 400 == 0)) return 29;
@@ -79,3 +95,13 @@ ostream &operator <<(ostream &out, const Date &x){
     out<<x.D<<"/"<<x.M<<"/"<<x.Y;
     return out;
 };
+
+string Date::toString() const{
+    string res = "";
+    if (D < 10) res += "0";
+    res += to_string(D) + "/";
+    if (M < 10) res += "0";
+    res += to_string(M) + "/";
+    res += to_string(Y);
+    return res;
+}
