@@ -12,7 +12,7 @@ template <typename Class> LinkedList<Class>::LinkedList(const LinkedList<Class> 
             this->Add(currentOther->data);
             currentOther = currentOther->next;
         }
-    };
+    }
 
 template <typename Class>
 void LinkedList<Class>::Add(Class Data){
@@ -93,7 +93,7 @@ template <typename Class> void LinkedList<Class>::display() const {
         temp = temp->next;
     }
     cout << "______________________________" << endl;
-};
+}
 
 template <typename Class>
 template <typename Member> 
@@ -107,7 +107,7 @@ LinkedList<Class> LinkedList<Class>::SearchMethod(Member Class::*memberPtr, Memb
         Curr = Curr->next;
     }
     return Result;
-};
+}
 
 template <typename Class>
 template <typename Member>
@@ -143,11 +143,27 @@ Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, M
 template <typename Class>
 template <typename Member>
 void LinkedList<Class>::Sort(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc){
-    if (low != high->next || low != high){
-        Node<Class> *Point = Partition(low, high, memberPtr, Asc);
-        Sort(low, Point, memberPtr, Asc);
-        Sort(Point->next, high, memberPtr, Asc);
+    // Guard against null pointers and trivial ranges
+    if (low == nullptr || high == nullptr) return;
+    if (low == high) return;           // single element
+    if (low == high->next) return;     // empty range
+
+    Node<Class> *Point = Partition(low, high, memberPtr, Asc);
+
+    // Find node previous to Point starting from low. This avoids passing
+    // Point itself as the high bound to the left recursive call which
+    // can cause infinite recursion when Point == low.
+    Node<Class> *prev = nullptr;
+    Node<Class> *temp = low;
+    while (temp != nullptr && temp != Point) {
+        prev = temp;
+        temp = temp->next;
     }
+
+    if (prev != nullptr) {
+        Sort(low, prev, memberPtr, Asc);
+    }
+    Sort(Point->next, high, memberPtr, Asc);
 }
 
 template <typename Class>
@@ -162,7 +178,8 @@ void LinkedList<Class>::SortWrap(Member Class::*memberPtr){
     cout<<"\nNhap lua chon:"
         <<"\n[0] khong sort"
         <<"\n[1] tang dan"
-        <<"\n[2] giam dan";
+        <<"\n[2] giam dan"
+        <<"\nLua chon cua ban: ";
     while(true){
         cin>>Choice;
         if (Choice == 0) return;
@@ -189,6 +206,7 @@ template <typename ClassAlt> ostream &operator <<(ostream &out, const LinkedList
     return out;
 }
 
+template <typename Class>
 void LinkedList<Class>::Search(){
     
 }

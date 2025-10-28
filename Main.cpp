@@ -1,9 +1,12 @@
 #include "LinkedList.cpp"
+#include "Books.h"
+#include "Member.h"
+#include "Transaction.h"
 #include <iostream>
-
+#include <conio.h>
 using namespace std;
 
-class Exam {
+/*class Exam {
     private:
     int BUCKFOI;
     int NGG;
@@ -15,18 +18,12 @@ class Exam {
         os << "\n" << A.BUCKFOI << "   " << A.NGG;
         return os;
     }
-};
+};*/
 
 int main() {
-    LinkedList<Exam> A;
-    Exam Test(69, 96);
-    Exam Test2(59, 95);
-    A.Add(Test);
-    A.Add(Test2);
-    A.display();
-    A.SortWrap(Exam::getBuckfoiPtr());
-    A.display();
-    int i;
-    cin>>i;
+    LinkedList<Book> bookList;
+    LinkedList<Member> memberList;
+    LinkedList<Transaction> transactionList;
+    
     return 0;
 }

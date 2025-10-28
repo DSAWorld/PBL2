@@ -18,7 +18,6 @@ Transaction::Transaction(string Owner, int state, int borrowingdays, Items *Item
     } else {
         List = ItemList;
     }
-    
 }
 
 Transaction::Transaction(const string& str){

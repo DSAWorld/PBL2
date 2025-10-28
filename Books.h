@@ -30,7 +30,10 @@ class Books{
     unsigned int TotalAmount;
     unsigned int Available;
     public:
-    
+    Books(string IDInp, string NameInp, string AuthorInp, string PublisherInp, enum Category genreInp, unsigned int TotalAmtInp, unsigned int AvailableInp)
+    :ID(IDInp), Name(NameInp), Author(AuthorInp), Publisher(PublisherInp), genre(genreInp), TotalAmount(TotalAmtInp), Available(AvailableInp){};
+    Books(const Books &A):ID(A.ID), Name(A.Name), Author(A.Author), Publisher(A.Publisher), genre(A.genre), TotalAmount(A.TotalAmount), Available(A.Available){};
+    Books(const string& str);
     static auto getID() { return &Books::ID;};
     static auto getName() { return &Books::Name;};
     static auto getAuthor() { return &Books::Author;};
@@ -39,6 +42,7 @@ class Books{
     friend bool LinkedList<Books>::Comp(const Books& A, const Books& B, int Books::*memberPtr, bool asc);
     friend bool LinkedList<Books>::Comp(const Books& A, const Books& B, string Books::*memberPtr, bool asc);
     friend ostream& operator<<(ostream& os, const Books &A); 
+    string toString() const;
 };
 
 #endif // BOOKS_H

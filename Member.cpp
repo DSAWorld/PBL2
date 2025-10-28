@@ -11,6 +11,56 @@ Member::Member(string NameInp, string ContactInp, string IDInp){
     TransactionID = nullptr;
 }
 
+Member::Member(const Member &A):LastVio(A.LastVio), ID(A.ID), Name(A.Name), Contact(A.Contact), state(A.state){
+    // Deep copy for Hist
+    if (A.Hist != nullptr) {
+        // Assuming Hist is a null-terminated array of strings
+        int count = 0;
+        while (A.Hist[count] != "") {
+            count++;
+        }
+        Hist = new string[count + 1];
+        for (int i = 0; i < count; i++) {
+            Hist[i] = A.Hist[i];
+        }
+        Hist[count] = ""; // Null-terminate
+    } else {
+        Hist = nullptr;
+    }
+
+    // Deep copy for TransactionID
+    if (A.TransactionID != nullptr) {
+        // Assuming TransactionID is a null-terminated array of strings
+        int count = 0;
+        while (A.TransactionID[count] != "") {
+            count++;
+        }
+        TransactionID = new string[count + 1];
+        for (int i = 0; i < count; i++) {
+            TransactionID[i] = A.TransactionID[i];
+        }
+        TransactionID[count] = ""; // Null-terminate
+    } else {
+        TransactionID = nullptr;
+    }
+}
+
+Member::Member(const string& str){
+    stringstream ss(str);
+    string token;
+    getline(ss, token, ',');
+    ID = token;
+    getline(ss, token, ',');
+    Name = token;
+    getline(ss, token, ',');
+    Contact = token;
+    getline(ss, token, ',');
+    LastVio = Date(token);
+    getline(ss, token, ',');
+    state = stoi(token);
+    // Hist and TransactionID parsing can be added here if needed
+}
+
 Member::~Member(){
     delete [] Hist;
     delete [] TransactionID;
@@ -70,4 +120,10 @@ Member* Member::newMember(const LinkedList<Member>& allMembers){
 
 void Member::Sparing(){
     
+}
+
+string Member::toString() const{
+    string str = ID + "," + Name + "," + Contact + "," + LastVio.toString() + "," + to_string(state);
+    // Hist and TransactionID serialization can be added here if needed
+    return str;
 }

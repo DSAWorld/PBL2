@@ -27,6 +27,8 @@ class Member{
     public:
     Member(string NameInp, string ContactInp, string IDInp);
     static Member* newMember(const LinkedList<Member>& allMembers);
+    Member(const Member &A);
+    Member(const string& str);
     ~Member();
     void Edit();
     void Sparing();
@@ -37,5 +39,6 @@ class Member{
     };
     friend bool LinkedList<Member>::Comp(const Member& A, const Member& B, string Member::*memberPtr, bool asc);
     friend ostream& operator<<(ostream& os, const Member &A); 
+    string toString() const;
 };
 #endif // MEMBER_H

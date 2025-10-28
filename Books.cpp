@@ -1,31 +1,41 @@
-#ifndef BOOKS_H
-#define BOOKS_H
-
-#include <iostream>
-#include <string.h>
+#include "Books.h"
 
 using namespace std;
 
-enum Category{
-    Textbook,
-    Journals,
-    Research,
-    STEM,
-    Med,
-    Law,
-    Business,
-    Psychologies,
-    Misc
-};
+string Books::toString() const{
+    string str = "";
+    str += ID + ",;";
+    str += Name + ";,";
+    str += Author + ",";
+    str += Publisher + ",";
+    str += to_string(genre) + ",";
+    str += to_string(TotalAmount) + ",";
+    str += to_string(Available);
+    return str;
+}
 
-class Books{
-    private: 
-    string ID;
-    enum Category genre; 
-    unsigned int TotalAmount;
-    unsigned int Available;
-    public:
-    
-};
-
-#endif // BOOKS_H
+Books::Books(const string &str){
+    stringstream ss(str);
+    string token;
+    getline(ss, token, ',');
+    ID = token;
+    getline(ss, token, ',');
+    while(token.back() != ';'){
+        Name += token + ",";
+        getline(ss, token, ',');
+    }
+    if(Name[0] == ";")
+        Name.erase(0,1);
+    if(Name.back() == ';')
+        Name.pop_back();
+    getline(ss, token, ',');
+    Author = token;
+    getline(ss, token, ',');
+    Publisher = token;
+    getline(ss, token, ',');
+    genre = static_cast<Category>(stoi(token));
+    getline(ss, token, ',');
+    TotalAmount = stoi(token);
+    getline(ss, token, ',');
+    Available = stoi(token);
+}
