@@ -39,3 +39,8 @@ Books::Books(const string &str){
     getline(ss, token, ',');
     Available = stoi(token);
 }
+
+ostream& operator<<(ostream& os, const Books &A){
+    os << "\n" << A.ID << " | " << A.Name << " | " << A.Author << " | " << A.Publisher << " | " << A.genre << " | " << A.TotalAmount << " | " << A.Available;
+    return os;
+}

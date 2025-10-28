@@ -2,8 +2,7 @@
 #include<sstream>
 #include<fstream>
 #include<string>
-#include"function.h"
-#include"Transaction.h"
+#include "Books.h"
 using namespace std;
 
 template <typename Class>
@@ -28,7 +27,7 @@ void writeToFile(const string& filename, const LinkedList<Class>& list) {
         cerr << "Could not open the file " << filename << " for writing." << endl;
         return;
     }
-    Node<T>* current = list.head;
+    Node<Class>* current = list.head;
     while (current != nullptr) {
         file << current->data.toString() << endl;
         current = current->next;

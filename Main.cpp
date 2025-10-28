@@ -1,9 +1,9 @@
-#include "LinkedList.cpp"
+#include "LinkedList.h"
+#include "function.cpp"
 #include "Books.h"
-#include "Member.h"
-#include "Transaction.h"
 #include <iostream>
 #include <conio.h>
+
 using namespace std;
 
 /*class Exam {
@@ -21,9 +21,8 @@ using namespace std;
 };*/
 
 int main() {
-    LinkedList<Book> bookList;
-    LinkedList<Member> memberList;
-    LinkedList<Transaction> transactionList;
-    
+    LinkedList<Books> bookList;
+    readFromFile("Library.txt", bookList);
+    bookList.display();
     return 0;
 }
