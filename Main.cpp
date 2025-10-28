@@ -1,6 +1,8 @@
 #include "LinkedList.h"
+#include "LinkedList.cpp"
 #include "function.cpp"
 #include "Books.h"
+#include "Books.cpp"
 #include <iostream>
 #include <conio.h>
 
@@ -24,5 +26,6 @@ int main() {
     LinkedList<Books> bookList;
     readFromFile("Library.txt", bookList);
     bookList.display();
+    getch();
     return 0;
 }
