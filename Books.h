@@ -30,6 +30,7 @@ class Books{
     int TotalAmount;
     int Available;
     public:
+    friend class LinkedList<Books>;
     Books(string IDInp, string NameInp, string AuthorInp, string PublisherInp, enum Category genreInp, int TotalAmtInp, int AvailableInp)
     :ID(IDInp), Name(NameInp), Author(AuthorInp), Publisher(PublisherInp), genre(genreInp), TotalAmount(TotalAmtInp), Available(AvailableInp){};
     Books(const Books &A):ID(A.ID), Name(A.Name), Author(A.Author), Publisher(A.Publisher), genre(A.genre), TotalAmount(A.TotalAmount), Available(A.Available){};
