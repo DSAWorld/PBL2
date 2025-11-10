@@ -12,67 +12,117 @@ using namespace std;
 
 struct Items{
     string BookID;
-    unsigned int Amount = 0;
+    unsigned int Amount;
 };
 
-enum returnTypes{
-    stringID = 1,
-    stringOwner = 2,
-    intItemCount = 1,
-    intState = 2,
-    DateBorrowing = 1,
-    DateDue = 2,
-    DateReturn = 3,
+
+class TranState;
+
+enum TransreturnTypes{
+    TransstringID = 1,
+    TransstringOwner = 2,
+    TransstringBookID = 3,
+    TransDateBorrowing = 1,
+    TransDateDue = 2,
+    TransDateReturn = 3,
 };
 
 enum TransStatus{
     Actived,
     Reserved,
-    Ready,
     Returned,
-    Overdue
+    Overdue, //sub-Status of Actived
+    Cancelled
 };
 
 class Transaction{
     string ID; //TransactNum-TotalAmount;
     string OwnerID;
     Items *List;
-    int ItemCount;
+    unsigned int NumberofItems = 0;
+    unsigned int ItemCount = 0;
     Date Borrowing;
     Date Due;
     Date ReturnDate;
-    unsigned int Fee = 0;
-    int State;
+    TranState *State;
+    int Status;
     public:
-    Transaction(string Owner, int state, int borrowingdays, Items *ItemList);
+    Transaction(string Owner, int state, int borrowingdays, Items *ItemList, int Number, LinkedList<Resources>& BooksList);
     string IDHelper(long);
     static string StringHelper(int Value){
         if (Value < 10) return "0" + to_string(Value);
         else return to_string(Value);
     };
-    ~Transaction();
-    void Reserve();
     void BorrowDate(int Days);
-    void CalculateFee(Member &ReturningMember);
-    void Return(Member &ReturningMember);
-    void Search(const LinkedList<Transaction>& List);
-    Items* CreateBookList();
+    void Search(const LinkedList<Transaction>& TransactionList);
+    void CreateBookList(LinkedList<Resources>& BooksList);
+    void ReturnBooks(LinkedList<Resources>& BooksList);
+    void Revalidate();
+    void HandlingStates(Node<Transaction> *Nodeprev);
+    void setState(TranState* newState);
+
     static auto getDatePtr(int Types){
-        if (Types == DateBorrowing) return &Transaction::Borrowing; 
-        if (Types == DateDue) return &Transaction::Due;
-        if (Types == DateReturn) return &Transaction::ReturnDate;
+        switch (Types){
+        case TransDateBorrowing: return &Transaction::Borrowing; 
+        case TransDateDue: return &Transaction::Due;
+        case TransDateReturn: return &Transaction::ReturnDate;
+        }
     };
+
     static auto getStringPtr(int Types){
-        if (Types == stringID) return &Transaction::ID; 
-        if (Types == stringOwner) return &Transaction::OwnerID;
+        switch(Types){
+            case TransstringID: return &Transaction::ID;
+            case TransstringOwner: return &Transaction::OwnerID;
+        }
     };
-    static auto getIntPtr(int Types){
-        if (Types == intItemCount) return &Transaction::ItemCount; 
-        if (Types == intState) return &Transaction::State;
-    };
-    friend bool LinkedList<Transaction>::Comp(const Transaction& A, const Transaction& B, Date Transaction::*memberPtr, bool asc);
-    friend bool LinkedList<Transaction>::Comp(const Transaction& A, const Transaction& B, string Transaction::*memberPtr, bool asc);
+
+    // friend bool LinkedList<Transaction>::Comp(const Transaction& A, const Transaction& B, Date Transaction::*memberPtr, bool asc);
+    // friend bool LinkedList<Transaction>::Comp(const Transaction& A, const Transaction& B, string Transaction::*memberPtr, bool asc);
     friend ostream& operator<<(ostream& os, const Transaction &A); 
+};
+
+class TranState{
+    public:
+        virtual ~TranState(){};
+        virtual void handle(Transaction *Trans){};
+        virtual void handleAlt(Transaction *Trans){
+            cout<<"\nLoi: Chi co the huy The o trang thai giu cho";
+        }
+        virtual int getState() = 0;
+};
+
+
+class ActiveState: public TranState{
+    public:
+        int getState() override{
+            return Actived;
+        }
+        void handle(Transaction *Trans) override;
+};
+
+class ReserveState: public TranState{
+    public:
+        int getState() override{
+            return Reserved;
+        }
+        void handle(Transaction *Trans) override;
+        void handleAlt(Transaction *Trans) override;
+};
+
+class ReturnState: public TranState{
+    public:
+        int getState() override{
+            return Returned;
+        }
+        void handle(Transaction *Trans) override {};
+};
+
+class CancelState: public TranState{
+    public:
+        int getState() override{
+            return Cancelled;
+        }
+        void handle(Transaction *Trans) override {};
 };
 
 #endif // TRANSAC_H

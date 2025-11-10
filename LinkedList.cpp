@@ -4,8 +4,7 @@
 using namespace std;
 
 template <typename Class> LinkedList<Class>::LinkedList(const LinkedList<Class> &other):head(nullptr), tail(nullptr){
-        if (!other.head)
-            return;
+        if (!other.head) return;
         Node<Class> *currentOther = other.head;
         while (currentOther)
         {
@@ -109,11 +108,11 @@ LinkedList<Class> LinkedList<Class>::SearchMethod(Member Class::*memberPtr, Memb
     return Result;
 };
 
-template <typename Class>
-template <typename Member>
-bool LinkedList<Class>::Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc) {
-    return asc ? (A.*memberPtr < B.*memberPtr) : (A.*memberPtr > B.*memberPtr);
-}
+// template <typename Class>
+// template <typename Member>
+// bool LinkedList<Class>::Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc) {
+//     return asc ? (A.*memberPtr < B.*memberPtr) : (A.*memberPtr > B.*memberPtr);
+// }
 
 template <typename Class>
 void LinkedList<Class>::Swap(Node<Class>* A, Node<Class>* B) {
@@ -130,7 +129,7 @@ Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, M
     Node<Class>* j = low; 
     
     while (j != high) {
-        if (Asc ? (j->data.*memberPtr < pivot.*memberPtr) : (j->data.*memberPtr > pivot.*memberPtr)) {
+        if (Asc ? (j->data->*memberPtr < pivot->*memberPtr) : (j->data->*memberPtr > pivot->*memberPtr)) {
             Swap(i, j);
             i = i->next;
         }
@@ -143,7 +142,7 @@ Node<Class>* LinkedList<Class>::Partition(Node<Class>* low, Node<Class>* high, M
 template <typename Class>
 template <typename Member>
 void LinkedList<Class>::Sort(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc){
-    if (low != high->next || low != high){
+    if (low != high->next && low != high){
         Node<Class> *Point = Partition(low, high, memberPtr, Asc);
         Sort(low, Point, memberPtr, Asc);
         Sort(Point->next, high, memberPtr, Asc);
@@ -152,12 +151,16 @@ void LinkedList<Class>::Sort(Node<Class>* low, Node<Class>* high, Member Class::
 
 template <typename Class>
 template <typename Member> 
-void LinkedList<Class>::SortWrap(Member Class::*memberPtr){
+void LinkedList<Class>::SortWrap(Member Class::*memberPtr, bool autoSort){
     if(head == nullptr || head->next == nullptr){
         cout<<"\nDanh sach rong hoac chi co 1 phan tu";
         return;
     }
     int Choice = -1;
+    if (autoSort){
+        (head, tail, memberPtr, true);
+        return;
+    }
     bool Asc;
     cout<<"\nNhap lua chon:"
         <<"\n[0] khong sort"
@@ -189,6 +192,23 @@ template <typename ClassAlt> ostream &operator <<(ostream &out, const LinkedList
     return out;
 }
 
-void LinkedList<Class>::Search(){
-    
+
+template <typename Class> Class *LinkedList<Class>::searchIndex(int ind){
+    int i = ind-1;
+    Node<Class> *current = head;
+    while (i){
+        current = current -> next;
+        i--;
+    }
+    return &(current->data);
+}
+
+template <typename Class>
+template <typename Member>
+Class *LinkedList<Class>::SearchItem(Member Class::*memberPtr, Member Data){
+    Node<Class> *current = head;
+    while (current != nullptr){
+        if(current->data->*memberPtr == Data) return &(current->data);
+    }
+    return nullptr;
 }

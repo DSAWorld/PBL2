@@ -6,6 +6,7 @@
 #include "LinkedList.h"
 #include "Transaction.h"
 #include "Date.h"
+#include "Exceptions.h"
 
 using namespace std;
 
@@ -25,8 +26,8 @@ class Member{
     string *TransactionID; //List of Current, not turned in Transactions
     int state;
     public:
-    Member(string NameInp, string ContactInp, string IDInp);
-    static Member* newMember(const LinkedList<Member>& allMembers);
+    Member(string NameInp, string ContactInp, bool isStudent, string studentID, const LinkedList<Member>& allMembers);
+    Member *newMember(const LinkedList<Member>& allMembers);
     ~Member();
     void Edit();
     void Sparing();
@@ -35,7 +36,7 @@ class Member{
         if (!Hard && state < Suspended) state++;
         else state = Suspended;
     };
-    friend bool LinkedList<Member>::Comp(const Member& A, const Member& B, string Member::*memberPtr, bool asc);
+    // friend bool LinkedList<Member>::Comp(const Member& A, const Member& B, string Member::*memberPtr, bool asc);
     friend ostream& operator<<(ostream& os, const Member &A); 
 };
 #endif // MEMBER_H

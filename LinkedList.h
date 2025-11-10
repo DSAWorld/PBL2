@@ -19,7 +19,9 @@ class LinkedList{
 private:
     Node<Class>* head;
     Node<Class>* tail;
+    static int Indexing;
 public:
+    int Size=0;
     LinkedList():head(nullptr), tail(nullptr){};
     LinkedList(const LinkedList<Class> &other);
     ~LinkedList();
@@ -29,14 +31,14 @@ public:
     void display() const;
     void deleteIndex(int index);
     void Swap(Node<Class> *A, Node<Class> *B);
-    void Search();
-    void deleteData();
+    Class *searchIndex(int index);
+    // template <typename Member> deleteData(Member Class::*memberPtr, Member Data, bool autoDel = 0);
+    template <typename Member> Class *SearchItem(Member Class::*memberPtr, Member Data);
     template <typename Member> LinkedList<Class> SearchMethod(Member Class::*memberPtr, Member Data) const;
-    template <typename Member> bool Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc);
+    // template <typename Member> bool Comp(const Class &A, const Class &B, Member Class::*memberPtr, bool asc);
     template <typename Member> Node<Class>* Partition(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc);
     template <typename Member> void Sort(Node<Class>* low, Node<Class>* high, Member Class::*memberPtr, bool &Asc);
-    template <typename Member> void SortWrap(Member Class::*memberPtr);
-    template <typename ClassAlt> friend ostream& operator<<(ostream& os, const LinkedList<ClassAlt> &list);
+    template <typename Member> void SortWrap(Member Class::*memberPtr,bool autoSort=0);
 };  
 
 #endif // LINKEDLIST_H

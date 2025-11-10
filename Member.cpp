@@ -1,11 +1,27 @@
 #include "Member.h"
 #include <stdlib.h>
 
-Member::Member(string NameInp, string ContactInp, string IDInp){
+Member::Member(string NameInp, string ContactInp, bool isStudent, string studentID, const LinkedList<Member>& allMembers) {
     Name = NameInp;
     Contact = ContactInp;
-    ID = IDInp;
-    LastVio(0,0,0);
+    
+    if (isStudent) {
+        ID = "SV-" + studentID;
+        LinkedList<Member> existing = allMembers.SearchMethod(&Member::ID, ID);
+        if (!existing.isEmpty()) {
+            throw ExceptionIDDuplicate("sinh vien");
+        }
+    } else {
+        LinkedList<Member> existing;
+        do {
+            srand(time(NULL));
+            int RandNum = rand()*rand() % 90000001 + 9999999;
+            ID = "ID-" + to_string(RandNum);
+            LinkedList<Member> existing = allMembers.SearchMethod(&Member::ID, ID);
+        } while (!existing.isEmpty());
+    }
+
+    LastVio = Date(0,0,0);
     state = Active;
     Hist = nullptr;
     TransactionID = nullptr;
@@ -30,22 +46,17 @@ Member* Member::newMember(const LinkedList<Member>& allMembers){
                 string SVID;
                 cin>>SVID;
                 TempID = "SV-" + SVID;
-                LinkedList<Member> existing = allMembers.SearchMethod(&Member::ID, TempID);
-                if (!allMembers.isEmpty()){
-                    cout<<"ID bi trung, vui long kiem tra lai";
-                    cin.get();
-                    return nullptr;
-                }
                 cin.get();
                 break;
             }
             case 2: {
+                LinkedList<Member> existing;
                 do{
                 srand(time(NULL));
                 int RandNum = rand()*rand() % 90000001 + 9999999;
                 TempID = "ID-" + to_string(RandNum);
                 LinkedList<Member> existing = allMembers.SearchMethod(&Member::ID, TempID);
-                } while (!allMembers.isEmpty());
+                } while (!existing.isEmpty());
                 cout<<"\nID: "<<ID;
                 cin.get();
                 break;
@@ -62,7 +73,7 @@ Member* Member::newMember(const LinkedList<Member>& allMembers){
     cin>>NameInp;
     cout<<"\nNhap thong tin lien he: ";
     cin>>ContactInp;
-    Member* newMember = newMember(NameInp, ContactInp, TempID);
+    Member* newMember = new Member(NameInp, ContactInp, (n == 1), TempID, allMembers);
     cout<<"Da hoan thanh thu tuc dang ky";
     cin.get();
     return newMember;
