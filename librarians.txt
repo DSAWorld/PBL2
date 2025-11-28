@@ -1,0 +1,3 @@
+"|LIB-001|" , "|Nguyen Van Admin|" , "|090111222|" , "|admin123|" , 
+"|LIB-002|" , "|Tran Thi Thu Thu|" , "|090333444|" , "|password|" , 
+"|LIB-003|" , "|Le Quan Ly|" , "|090555666|" , "|secret|" ,
